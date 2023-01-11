@@ -25,22 +25,30 @@ _Благодаря этому проекту можно:_
 Docker-compose. Docker "упаковывает" приложение и все его зависимости в
 контейнер и может быть перенесен при использовании на месте ОС Linux. Docker-compose это инструмент для запуска многоконтейнерных приложений.
 
-#### Клонируем репозиторий
+#### Клонируем и разворачиваем репозиторий
 ```git clone git@github.com:Olesyacur/infra_sp2.git```
-#### Создаем в директории, котрую клонировали файл .env по шаблону
+- Установливаем и активируем виртуальное окружение
+- Установливаем зависимости из файла requirements.txt
+- В папке с файлом manage.py выполните команду:
+```python manage.py runserver```
+
+#### Создаем в директории infra/ файл .env по шаблону
 DB_ENGINE= # указываем базу данных, с которой будем работать
 DB_NAME= # имя базы данных
 POSTGRES_USER= # логин для подключения к базе данных
 POSTGRES_PASSWORD= # пароль для подключения к БД (установите свой)
 DB_HOST= # название сервиса (контейнера)
 DB_PORT= # порт для подключения к БД
-#### Запускаем docker-compose
-```docker-compose up -d```
-#### Выполняем миграции
+#### Запускаем приложение в контейнерах
+- Переходим в папку с файлом docker-compose.yaml:
+```cd infra/```
+- Собираем контейнеры (infra_db_1, infra_web_1, infra_nginx_1):
+```docker-compose up -d --build```
+- Выполняем миграции
 ```docker-compose exec web python manage.py migrate```
-#### Создаем суперпользователя
+- Создаем суперпользователя
 ```docker-compose exec web python manage.py createsuperuser```
-#### Собираем статику со всего проекта
+- Собираем статику со всего проекта
 ```docker-compose exec web python manage.py collectstatic --no-input```
 #### Для заполнения тестовыми данными можно выполнить команду
 ```docker-compose exec web python manage.py loaddata fixtures.json```
@@ -51,8 +59,6 @@ DB_PORT= # порт для подключения к БД
 #### Другие возможности
 Для создания дампа данных из БД
 ```docker-compose exec web python manage.py dumpdata > dump.json```
-Пересборка и запуск контейнеров
-```docker-compose up -d --build```
 Просмотр запущенных контейнеров
 ```docker stats```
 Остановка и удаление контейнеров, томов, образов
