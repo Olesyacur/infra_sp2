@@ -46,7 +46,7 @@ DB_PORT= # порт для подключения к БД
 ```docker-compose exec web python manage.py createsuperuser```
 - Собираем статику со всего проекта
 ```docker-compose exec web python manage.py collectstatic --no-input```
-#### Для заполнения тестовыми данными можно выполнить команду
+#### Для заполнения тестовыми данными можно выполнить команду из директории api_yamdb 
 ```docker-compose exec web python manage.py loaddata fixtures.json```
 
 Теперь проект доступен по адресу http://localhost/admin. Можно войти под
